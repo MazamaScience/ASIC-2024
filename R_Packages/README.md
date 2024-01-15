@@ -1,23 +1,16 @@
 # Workshop on R packages for Air Quality Sensor Data
 
-This workshop will introduce users to two R packages designed specifically for
-working with air quality data from regulatory monitors and low-cost sensors.
-The [AirMonitor](https://mazamascience.github.io/AirMonitor) and
-[AirSensor2](https://mazamascience.github.io/AirSensor2) packages are part of a
-suite of R packages that provide core functionality for environmental monitoring
-at fixed locations.
-
-This workshop will introduce attendees to open source R packages for data access,
-manipulation and visualization of sensor and regulatory monitoring data. The
+This workshop will introduce participants to two open source R packages designed
+specifically for
+working with air quality data from regulatory monitors and low-cost sensors. The
 [AirMonitor](https://mazamascience.github.io/AirMonitor) and
 [AirSensor2](https://mazamascience.github.io/AirSensor2) packages
-have been developed with funding from and have been used by the US EPA, US
+have been developed with funding from, and have been used by the US EPA, the US
 Forest Service and the South Coast Air Quality Management District. These R
-packages represent a decade of continuous development and with a focus on
+packages are part of a suite of R packages that provide core functionality for environmental monitoring at fixed locations. The full suite of packages
+represent a decade of continuous development with a focus on
 compact data formats, robust data analysis, compelling data visualization and a
 simple, easy-to-learn coding style.
-
-**See Workshop Preparation below.**
 
 ## Goals
 
@@ -34,13 +27,14 @@ independently, without the support of IT staff for data ingest and manipulation.
 The target audience includes anyone who works with Air Quality data from
 regulatory monitors and low cost sensors and who is a regular user of R/RStudio.
 Attendees should have a basic understanding of R data types and common functions.
-Familiarity with the **dplyr** package will be especially helpful.
+Familiarity with the [dplyr](https://dplyr.tidyverse.org) package will be
+especially helpful.
 
 # R Packages for Environmental Time Series
 
-Over the last decade, Mazama Science created many open source R packages focused
-on environmental time series. These are used operationally in data processing,
-analysis and visualization systems at the
+Over the last decade, Mazama Science created multiple open source R packages
+focused on environmental monitoring time series. These are used operationally in
+data processing, analysis and visualization systems at the
 US Forest Service [AirFire Team](https://portal.airfire.org/home), in the
 EPA AirNow [Fire & Smoke map](https://fire.airnow.gov) and elsewhere.
 
@@ -49,7 +43,6 @@ Jonathan Callahan currently maintains the following R packages:
 - [MazamaRollUtils](https://github.com/MazamaScience/MazamaRollUtils) – Fast rolling functions for R written in C++
 - [MazamaCoreUtils](https://github.com/MazamaScience/MazamaCoreUtils) – Utilities to help write production R code
 - [MazamaSpatialUtils](https://github.com/MazamaScience/MazamaSpatialUtils) – Harmonized spatial datasets and spatial search functions
-- [MazamaSpatialPlots](https://github.com/MazamaScience/MazamaSpatialPlots) – Thematic mapping for MazamaSpatialUtils
 - [MazamaLocationUtils](https://github.com/MazamaScience/MazamaLocationUtils) – Utilities for working with monitoring site “known locations”
 - [MazamaTimeSeries](https://github.com/MazamaScience/MazamaTimeSeries) – Core functionality for environmental time series data
 - [AirMonitor](https://github.com/MazamaScience/AirMonitor) – Utilities for working with air quality monitoring data
@@ -63,8 +56,8 @@ an invitation to join from jonathan.callahan@dri.com.
 # Workshop Preparation
 
 As with any hands-on workshop, advanced preparation by individuals will allow
-us to quickly dive into data analysis. **Attendees are encouraged to install the
-required packages and data files _before_ the workshop begins.**
+us to quickly dive into data analysis. **Attendees are strongly encouraged to
+install the required packages and data files _before_ the workshop begins.**
 
 Please ensure that the following software and data files have been installed
 on your laptop in advance of the workshop:
