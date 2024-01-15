@@ -1,4 +1,4 @@
-# Workshop on R packages for Air Quality Sensor Data
+# Workshop on R packages for Air Quality Data
 
 This workshop will introduce participants to two open source R packages designed
 specifically for
@@ -64,7 +64,8 @@ on your laptop in advance of the workshop:
 
 ## R and RStudio
 
-This workshop is targeted to regular R users.
+This workshop is designed for regular R users.
+
 Ensure that you are running [R](https://www.r-project.org) version 4.0 or higher.
 
 Ensure that you have installed [RStudio Desktop](https://posit.co/download/rstudio-desktop/)
@@ -102,11 +103,11 @@ devtools::install_github("mazamascience/AirSensor2")
 
 ## Spatial data
 
-The **MazamaSpatialUtils** package is used to enhanced spatial metadata when
-ingesting sensor data. Simplified spatial data for countries and timezones
-are installed with the packages but other, larger datasets must be installed
-in a dedicated directory. Work with the AirSensor2 packages requires installation
-of dastasets with state and county boundaries
+The **MazamaSpatialUtils** package is used to enhance spatial metadata when
+ingesting sensor data. Simplified spatial datasets for countries and timezones
+are installed with the package but other, larger datasets must be installed
+manually in a dedicated directory. Work with the AirSensor2 package requires
+installation of dastasets with state and county boundaries
 
 The default location for spatial data used in this workshop is underneath
 your home directory in `~/Data/Spatial/`. The following chunk of code will
