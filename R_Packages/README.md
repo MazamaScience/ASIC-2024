@@ -17,7 +17,7 @@ packages represent a decade of continuous development and with a focus on
 compact data formats, robust data analysis, compelling data visualization and a
 simple, easy-to-learn coding style.
 
-**<span style="color:salmon">See Workshop Preparation below.</span>**
+**See Workshop Preparation below.**
 
 ## Goals
 
@@ -60,7 +60,7 @@ Each package has a dedicated Slack channel for announcements, support and to
 help build communities of practices around these shared tools. You may request
 an invitation to join from jonathan.callahan@dri.com.
 
-# <span style="color:salmon">Workshop Preparation</span>
+# Workshop Preparation
 
 As with any hands-on workshop, advanced preparation by individuals will allow
 us to quickly dive into data analysis. **Attendees are encouraged to install the
