@@ -23,7 +23,7 @@ create QC reports and end-user graphics.
 ## Audience
 
 The R packages presented are designed for individuals who sometimes need to work
-independently, without the support of IT staff for data ingest and manipulation.
+independently, without the support of IT staff, for data ingest and manipulation.
 The target audience includes anyone who works with Air Quality data from
 regulatory monitors and low cost sensors and who is a regular user of R/RStudio.
 Attendees should have a basic understanding of R data types and common functions.
@@ -77,7 +77,7 @@ Most _(but not all)_ of the packages we will be using are available on CRAN.
 The easiest way to install these is to install the **AirMonitor** package which
 will recursively install all dependency packages.
 
-At the RStudio command prompt type:
+At the RStudio Console prompt type:
 
 ```
 install.packages("AirMonitor")
@@ -90,7 +90,7 @@ A few of the packages have not yet made it to CRAN. For these, you will need
 to install them directly from GitHub. Tools in the **devtools** pacakge make
 this very easy.
 
-At the RStudio command prompt type:
+At the RStudio Console prompt type:
 
 ```
 install.packages("devtools")
@@ -113,13 +113,33 @@ The default location for spatial data used in this workshop is underneath
 your home directory in `~/Data/Spatial/`. The following chunk of code will
 create this directory and populate it with the required datasets.
 
-At the RStudio command prompt type:
+At the RStudio Console prompt type:
 
 ```
 dir.create("~/Data/Spatial", recursive = TRUE)
 MazamaSpatialUtils::setSpatialDataDir("~/Data/Spatial")
 MazamaSpatialUtils::installSpatialData("NaturalEarthAdm1")
 MazamaSpatialUtils::installSpatialData("USCensusCounties")
+```
+
+## Workshop repository
+
+Finally, you should install all of the documentation, data and scripts for this
+workshop. We will use the RStudio _Terminal_ window to issue a shell command.
+
+At the RStudio Terminal prompt, type:
+
+```
+git clone git@github.com:mazamascience/ASIC-2024.git
+...
+```
+
+If you don't have a git account or can't log in, you may need to use the
+https location:
+
+```
+git clone https://github.com/MazamaScience/ASIC-2024.git
+...
 ```
 
 ---
