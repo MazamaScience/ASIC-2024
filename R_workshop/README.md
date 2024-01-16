@@ -64,7 +64,8 @@ on your laptop in advance of the workshop:
 
 ## R and RStudio
 
-This workshop is designed for regular R users.
+This workshop is designed for those who are already familiar with R and RStudio
+and use them on a regular basis.
 
 Ensure that you are running [R](https://www.r-project.org) version 4.0 or higher.
 
