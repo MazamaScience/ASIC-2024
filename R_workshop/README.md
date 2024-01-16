@@ -71,7 +71,7 @@ Ensure that you are running [R](https://www.r-project.org) version 4.0 or higher
 Ensure that you have installed [RStudio Desktop](https://posit.co/download/rstudio-desktop/)
 version 2023.03 or higher.
 
-## CRAN-based packages
+## CRAN packages
 
 Most _(but not all)_ of the packages we will be using are available on CRAN.
 The easiest way to install these is to install the **AirMonitor** package which
