@@ -25,8 +25,10 @@ monitor <-
 
 # This is a compact data format. The Environment tab shows it at ~5 MB
 
-# This object is an R list containing 2 dataframes: 'meta' and 'data'
+# This object is an R list
 class(monitor)
+
+# This list contains 2 dataframes: 'meta' and 'data'
 names(monitor)
 
 # 'meta' contains N metadata records (device-deployments) with 54 fields
@@ -34,10 +36,13 @@ dim(monitor$meta)
 
 dplyr::glimpse(monitor$meta, width = 75)
 
-View(monitor$data)
+View(monitor$meta)
 
 # 'data' contains hourly records for N device-deployments + the 'datetime' field
 dim(monitor$data)
+
+nrow(monitor$meta)
+ncol(monitor$data)
 
 dplyr::glimpse(monitor$data[1:5,1:10])
 
@@ -118,6 +123,8 @@ rubidoux <-
   riverside %>%
   monitor_select("c7cc2b21d9f11f15_840060658001")
 
+head(rubidoux$data)
+
 # ----- Fancy timeseries plot --------------------------------------------------
 
 rubidoux %>%
@@ -156,6 +163,8 @@ legend(
 monitor <-
   airnow_loadAnnual(2020)
 
+nrow(monitor$meta)
+
 # NOTE:  ~160 MB for an entire year!
 
 monitor %>%
@@ -170,6 +179,8 @@ wa <-
   monitor %>%
   monitor_filter(stateCode == "WA") %>%
   monitor_filterDate("2020-07-01", "2020-11-01")
+
+nrow(wa$meta)
 
 # Timeseries
 wa %>%
