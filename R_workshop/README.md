@@ -7,7 +7,8 @@ working with air quality data from regulatory monitors and low-cost sensors. The
 [AirSensor2](https://mazamascience.github.io/AirSensor2) packages
 have been developed with funding from, and have been used by the US EPA, the US
 Forest Service and the South Coast Air Quality Management District. These R
-packages are part of a suite of R packages that provide core functionality for environmental monitoring at fixed locations. The full suite of packages
+packages are part of a suite of R packages that provide core functionality for 
+environmental monitoring at fixed locations. The full suite of packages
 represent a decade of continuous development with a focus on
 compact data formats, robust data analysis, compelling data visualization and a
 simple, easy-to-learn coding style.

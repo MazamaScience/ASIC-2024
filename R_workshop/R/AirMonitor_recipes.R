@@ -9,6 +9,15 @@
 #  - AirMonitor
 #  - AirMonitorPlots
 
+# Check that the working directory is set properly
+if ( !stringr::str_detect(getwd(), "ASIC-2024/R_workshop$") ) {
+  stop("WD_ERROR:  Please set the working directory to 'ASIC-2024/R_workshop/'")
+}
+
+if ( packageVersion("AirMonitor") < "0.4.0" ) {
+  stop("VERSION_ERROR:  Please upgrade to AirMonitor 0.4.0 or later.")
+}
+
 library(AirMonitor)
 
 # Open reference docs in a web browser
@@ -46,8 +55,12 @@ ncol(monitor$data)
 
 dplyr::glimpse(monitor$data[1:5,1:10])
 
-# 'data' columns match 'meta' rows
-all(names(monitor$data) == c('datetime', monitor$meta$deviceDeploymentID))
+# NOTE:  Remember that dplyr shows column names and values. The familiar
+# row-column structure of 'data' is seen with head():
+head(monitor$data[1:10, 1:4])
+
+# 'meta' rows match 'data' columns
+all(names(monitor$meta$deviceDeploymentID == monitor$data[,-1])) # drop 'datetime'
 
 # IMPORTANT:  Compact data format relies on separating data and metadata
 
@@ -75,9 +88,7 @@ monitor %>%
 # Which counties have monitors?
 monitor %>%
   monitor_filter(stateCode == "CA") %>%          # filter by state
-  monitor_getMeta() %>%                          # get 'meta' dataframe
-  dplyr::pull(countyName) %>%                    # pull 'countyName'
-  ###monitor_pull(countyName) %>%                   # pull 'countyName'
+  monitor_pull("countyName") %>%                 # get meta$countyName
   table() %>%
   sort(decreasing = TRUE)
 
@@ -90,6 +101,7 @@ monitor %>%
 # ----- Time series ------------------------------------------------------------
 
 # All monitors in Riverside County
+
 # To make the "riverside" object
 riverside <-
   # Step 1) start with the "monitor" object
@@ -157,6 +169,17 @@ legend(
   lwd = c(NA, 2)
 )
 
+# ----- Updated PM NAAQS -------------------------------------------------------
+
+rubidoux %>%
+  monitor_timeseriesPlot(
+    shadedNight = TRUE,
+    addAQI = TRUE,
+    pch = 16,
+    main = "Air Quality at Rubidoux with updated NAAQS",
+    NAAQS = "PM2.5_2024"
+  )
+
 # ----- Annual data ------------------------------------------------------------
 
 # Load all of 2020 for all monitors
@@ -212,6 +235,7 @@ addAQILegend()
 # Check US_AQI object
 US_AQI$names_eng
 US_AQI$breaks_PM2.5
+US_AQI$breaks_PM2.5_2024
 
 # Hazardous starts at 250.5 ug/m3
 threshold <- US_AQI$breaks_PM2.5[6]
@@ -240,16 +264,18 @@ omak %>%
   )
 addAQILegend(
   "topright",
-  title = "PM2.5 (\u00b5g/m3)"                   # Unicode 00b5 is the "micro sign"
+  title = "PM2.5 (\u00b5g/m\u00b3)"              # 00b5 = micro, 00b3 = cubed
 )
 
-# Plot daily averages for Omak
+# Hours in each category
 omak %>%
-  monitor_dailyBarplot(
-    minHours = 18,
-    dayBoundary = "LST"
-  )
-addAQILegend("topright")
+  monitor_toAQCTable()
+
+# Days in each category in Chelan & Okanogan counties
+wa %>%
+  monitor_filter(countyName %in% c("Chelan", "Okanogan")) %>%
+  monitor_dailyStatistic(mean) %>%
+  monitor_toAQCTable()
 
 # Print daily max for Omak
 omak %>%
@@ -261,7 +287,15 @@ omak %>%
   monitor_getData() %>%
   print()
 
-# Washington state daily averages
+# Plot daily averages for Omak
+omak %>%
+  monitor_dailyBarplot(
+    minHours = 18,
+    dayBoundary = "LST"
+  )
+addAQILegend("topright")
+
+# Plot Washington state daily averages
 wa %>%
   monitor_collapse(
     FUN = mean
