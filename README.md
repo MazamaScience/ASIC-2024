@@ -8,7 +8,8 @@ _Last updated February 21, 2024_
 
 ## R Packages for Air Quality Data
 
-Complete [materials and setup instructions](./R_workshop.README.md) 
+Complete 
+[materials and setup instructions](https://github.com/MazamaScience/ASIC-2024/tree/main/R_workshop) 
 for the pre-conference training.
 
 Attendees will become familiar with the **AirMonitor** and **AirSensor2** R
