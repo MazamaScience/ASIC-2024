@@ -1,5 +1,9 @@
 # Workshop on R packages for Air Quality Data
 
+_Last updated February 21, 2024_
+
+----
+
 This workshop will introduce participants to two open source R packages designed
 specifically for
 working with air quality data from regulatory monitors and low-cost sensors. The
@@ -56,12 +60,12 @@ an invitation to join from jonathan.callahan@dri.com.
 
 # Workshop Preparation
 
-As with any hands-on workshop, advanced preparation by individuals will allow
-us to quickly dive into data analysis. **Attendees are strongly encouraged to
-install the required packages and data files _before_ the workshop begins.**
+**Attendees are strongly encouraged to install the required packages and data 
+files _before_ the workshop begins.**
 
-Please ensure that the following software and data files have been installed
-on your laptop in advance of the workshop:
+As with any hands-on workshop, advanced preparation by individuals will allow
+us to quickly dive into data analysis. Please ensure that the following software 
+and data files have been installed on your laptop in advance of the workshop:
 
 ## R and RStudio
 
@@ -76,8 +80,8 @@ version 2023.03 or higher.
 ## CRAN packages
 
 Most _(but not all)_ of the packages we will be using are available on CRAN.
-The easiest way to install these is to install the **AirMonitor** package which
-will recursively install all dependency packages.
+The easiest way to install these is to install the **AirMonitor** (>= 0.4.0) 
+package which will recursively install all dependency packages.
 
 At the RStudio Console prompt type:
 
@@ -127,9 +131,26 @@ MazamaSpatialUtils::installSpatialData("USCensusCounties")
 ## Workshop repository
 
 Finally, you should install all of the documentation, data and scripts for this
-workshop. We will use the RStudio _Terminal_ window to issue a shell command.
+workshop by cloning this repository. 
 
-At the RStudio Terminal prompt, type:
+### From RStudio
+
+You can create a new project from a GitHub repository by using the RStudio
+menubar:
+
+1. File > New Project...
+2. Version Control > Git
+3. URL: https://github.com/MazamaScience/ASIC-2024.git
+
+Choose a directory into which to clone the repository, check "Open in new session"
+and then press "Create Project".
+
+### From a terminal
+
+If you prefer, you can use a separate terminal window or the RStudio _Terminal_ 
+window to issue a shell command to clone the GitHub repository.
+
+At the terminal prompt, type:
 
 ```
 git clone git@github.com:mazamascience/ASIC-2024.git
