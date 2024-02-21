@@ -112,8 +112,8 @@ devtools::install_github("mazamascience/AirSensor2")
 The **MazamaSpatialUtils** package is used to enhance spatial metadata when
 ingesting sensor data. Simplified spatial datasets for countries and timezones
 are installed with the package but other, larger datasets must be installed
-manually in a dedicated directory. Work with the AirSensor2 package requires
-installation of dastasets with state and county boundaries
+manually in a dedicated directory. Work with the **AirSensor2** package requires
+installation of dastasets with state and county boundaries.
 
 The default location for spatial data used in this workshop is underneath
 your home directory in `~/Data/Spatial/`. The following chunk of code will
