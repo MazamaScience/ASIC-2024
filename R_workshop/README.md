@@ -55,7 +55,7 @@ Jonathan Callahan currently maintains the following R packages:
 - [AirSensor2](https://github.com/MazamaScience/AirSensor2) – Utilities for working with data from low-cost air quality sensors
 
 Each package has a dedicated Slack channel for announcements, support and to
-help build communities of practices around these shared tools. You may request
+help build communities of practice around these shared tools. You may request
 an invitation to join from jonathan.callahan@dri.com.
 
 # Workshop Preparation
