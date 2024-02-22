@@ -9,19 +9,21 @@
 #  - AirMonitor
 #  - AirMonitorPlots
 
+# Check that the AirMonitor package is recent enough
+if ( packageVersion("AirMonitor") < "0.4.0" ) {
+  stop("VERSION_ERROR:  Please upgrade to AirMonitor 0.4.0 or later.")
+}
+
 # Check that the working directory is set properly
 if ( !stringr::str_detect(getwd(), "ASIC-2024/R_workshop$") ) {
   stop("WD_ERROR:  Please set the working directory to 'ASIC-2024/R_workshop/'")
 }
 
-if ( packageVersion("AirMonitor") < "0.4.0" ) {
-  stop("VERSION_ERROR:  Please upgrade to AirMonitor 0.4.0 or later.")
-}
+# Open reference docs in a web browser
+browseURL("http://mazamascience.com/presentations/2022/ASIC_Universal_Data_Structures.pdf")
+browseURL("https://mazamascience.github.io/AirMonitor/reference/index.html")
 
 library(AirMonitor)
-
-# Open reference docs in a web browser
-browseURL("https://mazamascience.github.io/AirMonitor/reference/index.html")
 
 # ----- Examine 'mts_monitor' object -------------------------------------------
 
@@ -60,7 +62,7 @@ dplyr::glimpse(monitor$data[1:5,1:10])
 head(monitor$data[1:10, 1:4])
 
 # 'meta' rows match 'data' columns
-all(names(monitor$meta$deviceDeploymentID == monitor$data[,-1])) # drop 'datetime'
+all(monitor$meta$deviceDeploymentID == names(monitor$data[,-1])) # drop 'datetime'
 
 # IMPORTANT:  Compact data format relies on separating data and metadata
 
@@ -162,7 +164,7 @@ rubidoux %>%
 
 # Add a legend
 legend(
-  "topleft",
+  "topright",
   legend = c("Hourly PM2.5", "NowCast"),
   col = c("gray70", "gray10"),
   pch = c(16, NA),
@@ -233,7 +235,10 @@ addAQILegend()
 # Where was HAZARDOUS encountered?
 
 # Check US_AQI object
+str(US_AQI)
+
 US_AQI$names_eng
+US_AQI$names_spa
 US_AQI$breaks_PM2.5
 US_AQI$breaks_PM2.5_2024
 
@@ -303,5 +308,6 @@ wa %>%
   monitor_dailyBarplot(
     main = "Washington State daily average PM2.5"
   )
+addAQILegend("topright")
 
 
