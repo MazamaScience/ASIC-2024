@@ -47,3 +47,12 @@ po/*~
 
 # RStudio Connect folder
 rsconnect/
+
+# ----- Mazama Science custom -----
+
+*.Rproj
+
+global_vars.R
+
+.DS_Store
+

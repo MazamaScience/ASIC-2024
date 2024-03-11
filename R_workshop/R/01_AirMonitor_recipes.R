@@ -1,4 +1,4 @@
-# AirMonitor_recipes.R
+# 01_AirMonitor_recipes.R
 #
 # This script contains small chunks of R code (aka "recipes") that demonstrate
 # how to work with the AirMonitor package to access, manipulate and display
