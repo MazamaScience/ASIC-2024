@@ -45,8 +45,6 @@ names(monitor)
 # 'meta' contains N metadata records (device-deployments) with 54 fields
 dim(monitor$meta)
 
-dplyr::glimpse(monitor$meta, width = 75)
-
 View(monitor$meta)
 
 # 'data' contains hourly records for N device-deployments + the 'datetime' field
@@ -54,8 +52,6 @@ dim(monitor$data)
 
 nrow(monitor$meta)
 ncol(monitor$data)
-
-dplyr::glimpse(monitor$data[1:5,1:10])
 
 # NOTE:  Remember that dplyr shows column names and values. The familiar
 # row-column structure of 'data' is seen with head():

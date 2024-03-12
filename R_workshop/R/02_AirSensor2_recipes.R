@@ -46,15 +46,20 @@ PurpleAir_checkAPIKey(PurpleAir_API_READ_KEY)
 # timeseries data needed to make a 'monitor' object.
 
 # Metadata and current data (many fields)
-PurpleAir_DATA_AVG_PM25_FIELDS
+PurpleAir_PAS_AVG_PM25_FIELDS
 
 # Split up field names
-PurpleAir_DATA_AVG_PM25_FIELDS %>%
+PurpleAir_PAS_AVG_PM25_FIELDS %>%
   stringr::str_split(",") %>%
   print(width = 75)
 
 # Metadata only field names
-PurpleAir_SENSOR_METADATA_FIELDS  %>%
+PurpleAir_PAS_METADATA_FIELDS  %>%
+  stringr::str_split(",") %>%
+  print(width = 75)
+
+# Metadata only field names
+PurpleAir_PAS_MINIMAL_FIELDS  %>%
   stringr::str_split(",") %>%
   print(width = 75)
 
@@ -64,13 +69,16 @@ PurpleAir_SENSOR_METADATA_FIELDS  %>%
 pas <-
   pas_createNew(
     api_key = PurpleAir_API_READ_KEY,
-    fields = PurpleAir_SENSOR_METADATA_FIELDS,
+    fields = PurpleAir_PAS_MINIMAL_FIELDS,
     countryCodes = "US",
     stateCodes = "WA",
     counties = "Okanogan",
     lookbackDays = 365 * 10,     # 10 years
     location_type = 0            # Outdoor only
   )
+
+# It's a dataframe
+class(pas)
 
 # New fields have been added
 print(names(pas), width = 75)
@@ -140,6 +148,8 @@ pas %>%
 # All sensors in Washington state (from pre-downloaded data)
 pas_wa <- get(load("./data/example_pas_wa.rda"))
 
+nrow(pas_wa)
+
 # Interactive map
 pas_wa %>% pas_leaflet()
 
@@ -158,5 +168,35 @@ pas_wa %>%
     xlab = "Months"
   )
 
-# ----- PurpleAir Timeseries (PAT) ---------------------------------------------
+# ----- PurpleAir monitor ------------------------------------------------------
+
+# * pas_filterDate() -----
+
+# Find MVCAA sensosrs that produced data during the 2020 fire season
+pas %>%
+  dplyr::filter(stringr::str_detect(locationName, "Ambassador")) %>%
+  pas_filterDate(20200901, 20201001, timezone = "America/Los_Angeles") %>%
+  pas_leaflet()
+
+
+# TODO:  Check daily? or PA hourly? to avoid requesting data that doesn't work out
+
+
+# * PurpleAir_createNewMonitor() -----
+
+# Balky Hill (Twisp) = sensor_index 13669
+monitor <-
+  PurpleAir_createNewMonitor(
+    api_key = PurpleAir_API_READ_KEY,
+    pas = pas,
+    sensor_index = 13669, #13681,
+    startdate = 20200913,
+    enddate = 20200915,
+    timezone = "America/Los_Angeles"
+  )
+
+monitor %>%
+  AirMonitor::monitor_timeseriesPlot(
+    shadedNight = TRUE
+  )
 
