@@ -15,7 +15,7 @@ if ( packageVersion("AirMonitor") < "0.4.0" ) {
 }
 
 # Check that the working directory is set properly
-if ( !stringr::str_detect(getwd(), "ASIC-2024/R_workshop$") ) {
+if ( !stringr::str_detect(getwd(), "R_workshop$") ) {
   stop("WD_ERROR:  Please set the working directory to 'ASIC-2024/R_workshop/'")
 }
 
@@ -50,9 +50,6 @@ View(monitor$meta)
 # 'data' contains hourly records for N device-deployments + the 'datetime' field
 dim(monitor$data)
 
-nrow(monitor$meta)
-ncol(monitor$data)
-
 # NOTE:  Remember that dplyr shows column names and values. The familiar
 # row-column structure of 'data' is seen with head():
 head(monitor$data[1:10, 1:4])
@@ -69,6 +66,8 @@ all(monitor$meta$deviceDeploymentID == names(monitor$data[,-1])) # drop 'datetim
 monitor %>%
   # Step 1) create a leaflet map
   monitor_leaflet()
+
+# NOTE:  Useful spatial metadata include countryCode, stateCode, countyName
 
 # CONUS
 # start with the monitor object
@@ -111,6 +110,8 @@ riverside <-
 
 nrow(riverside$meta)
 
+ncol(riverside$data)
+
 # Riverside time series plot
 riverside %>%
   monitor_timeseriesPlot()
@@ -132,6 +133,9 @@ riverside %>%
 rubidoux <-
   riverside %>%
   monitor_select("c7cc2b21d9f11f15_840060658001")
+
+nrow(rubidoux$meta)
+ncol(rubidoux$data)
 
 head(rubidoux$data)
 
@@ -174,9 +178,31 @@ rubidoux %>%
     shadedNight = TRUE,
     addAQI = TRUE,
     pch = 16,
+    col = 'gray70',
     main = "Air Quality at Rubidoux with updated NAAQS",
     NAAQS = "PM2.5_2024"
   )
+
+# Add NowCast
+rubidoux %>%
+  monitor_nowcast(
+    includeShortTerm = TRUE
+  ) %>%
+  monitor_timeseriesPlot(
+    add = TRUE,
+    type = 'l',
+    lwd = 2,
+    col = "gray10"
+  )
+
+# Add a legend
+legend(
+  "topright",
+  legend = c("Hourly PM2.5", "NowCast"),
+  col = c("gray70", "gray10"),
+  pch = c(16, NA),
+  lwd = c(NA, 2)
+)
 
 # ----- Annual data ------------------------------------------------------------
 
@@ -231,7 +257,7 @@ addAQILegend()
 # Where was HAZARDOUS encountered?
 
 # Check US_AQI object
-str(US_AQI)
+names(US_AQI)
 
 US_AQI$names_eng
 US_AQI$names_spa

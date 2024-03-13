@@ -1,4 +1,4 @@
-# 02_AirSensor2_recipes.R
+# 02_AirSensor2_PAS recipes.R
 #
 # This script contains small chunks of R code (aka "recipes") that demonstrate
 # how to work with the AirSensor2 package to access, manipulate and display
@@ -18,13 +18,19 @@ if ( packageVersion("AirSensor2") < "0.5.0" ) {
   stop("VERSION_ERROR:  Please upgrade to AirSensor2 0.5.0 or later.")
 }
 
+# Check that the MazamaSpatialUtils package is recent enough
+if ( packageVersion("MazamaSpatialUtils") < "0.8.6" ) {
+  browseURL("https://github.com/MazamaScience/ASIC-2024/tree/main/R_workshop#spatial-data")
+  stop("VERSION_ERROR:  Please upgrade to MazamaSpatialUtils 0.8.6 or later.")
+}
+
 # Check that the working directory is set properly
-if ( !stringr::str_detect(getwd(), "ASIC-2024/R_workshop$") ) {
-  stop("WD_ERROR:  Please set the working directory to 'ASIC-2024/R_workshop/'")
+if ( !stringr::str_detect(getwd(), "R_workshop$") ) {
+  stop("WD_ERROR:  Please set the working directory to 'R_workshop/'")
 }
 
 # Open reference docs in a web browser
-browseURL("http://mazamascience.com/presentations/2022/ASIC_Universal_Data_Structures.pdf")
+browseURL("https://api.purpleair.com/#api-sensors-get-sensors-data")
 browseURL("https://mazamascience.github.io/AirSensor2/reference/index.html")
 
 library(AirSensor2)
@@ -54,43 +60,118 @@ PurpleAir_PAS_AVG_PM25_FIELDS %>%
   print(width = 75)
 
 # Metadata only field names
-PurpleAir_PAS_METADATA_FIELDS  %>%
-  stringr::str_split(",") %>%
-  print(width = 75)
-
-# Metadata only field names
 PurpleAir_PAS_MINIMAL_FIELDS  %>%
   stringr::str_split(",") %>%
   print(width = 75)
 
-# * pas_createNew() -----
+# Metadata only field names
+PurpleAir_PAS_METADATA_FIELDS  %>%
+  stringr::str_split(",") %>%
+  print(width = 75)
 
-# Create a metadata only PAS for identifying historical sensors
-pas <-
-  pas_createNew(
-    api_key = PurpleAir_API_READ_KEY,
-    fields = PurpleAir_PAS_MINIMAL_FIELDS,
-    countryCodes = "US",
-    stateCodes = "WA",
-    counties = "Okanogan",
-    lookbackDays = 365 * 10,     # 10 years
-    location_type = 0            # Outdoor only
-  )
+# ----- Maps -------------------------------------------------------------------
+
+if ( FALSE ) {
+
+  # This is how example_pas_pm25 was created:
+  example_pas_pm25 <-
+    pas_createNew(
+      api_key = PurpleAir_API_READ_KEY,
+      fields = PurpleAir_PAS_AVG_PM25_FIELDS,
+      countryCodes = "US",
+      stateCodes = c("WA", "OR"),
+      counties = NULL,
+      lookbackDays = 1,
+      location_type = 0
+    )
+
+}
+
+pas <- example_pas_pm25
 
 # It's a dataframe
 class(pas)
 
 # New fields have been added
-print(names(pas), width = 75)
+pas %>%
+  names() %>%
+  print(width = 75)
 
 # Some are empty
-unique(pas$elevation)
+unique(pas$houseNumber)
 
-# NOTE:  To add address and elevation information see:
-# NOTE:  - MazamaLocationUtils::location_getSingleAddress_Photon()
-# NOTE:  - MazamaLocationUtils::location_getSingleElevation_USGS()
+# NOTE:  To add address information see:
+# NOTE:    MazamaLocationUtils::location_getSingleAddress_Photon()
 
-# * lifespanPlot() -----
+# Basic map
+pas %>%
+  pas_leaflet()
+
+# * PM2.5 -----
+pas %>%
+  pas_leaflet(
+    parameter = "pm2.5_24hour"
+  )
+
+# * humidity -----
+pas %>%
+  pas_leaflet(
+    parameter = "humidity"
+  )
+
+# * other maps -----
+pas %>%
+  pas_leaflet(
+    parameter = "confidence"
+  )
+
+pas %>%
+  dplyr::mutate(
+    lack_of_confidence = 100 - confidence
+  ) %>%
+  pas_leaflet(
+    parameter = "lack_of_confidence"
+  )
+
+pas %>%
+  dplyr::mutate(
+    lifespan = as.numeric(difftime(last_seen, date_created, units = "days"))
+  ) %>%
+  pas_leaflet(
+    parameter = "lifespan"
+  )
+
+# ----- Historical data --------------------------------------------------------
+
+if ( FALSE ) {
+
+  example_pas_historical <-
+    pas_createNew(
+      api_key = PurpleAir_API_READ_KEY,
+      fields = PurpleAir_PAS_MINIMAL_FIELDS,
+      countryCodes = "US",
+      stateCodes = "WA",
+      counties = "Okanogan",
+      lookbackDays = 0,            # all years
+      location_type = 0            # outdoor only
+    )
+
+}
+
+pas <- example_pas_historical
+
+# Fields
+pas %>%
+  names() %>%
+  print(width = 75)
+
+nrow(pas)
+
+# Where are they?
+pas %>%
+  pas_leaflet()
+
+# * lifespans -----
 
 pas %>%
   pas_lifespanPlot()
@@ -143,7 +224,7 @@ pas %>%
     xlab = "Months"
   )
 
-# * all Washington pas -----
+# * all Washington histogram -----
 
 # All sensors in Washington state (from pre-downloaded data)
 pas_wa <- get(load("./data/example_pas_wa.rda"))
@@ -168,35 +249,47 @@ pas_wa %>%
     xlab = "Months"
   )
 
-# ----- PurpleAir monitor ------------------------------------------------------
+# ----- Metadata ---------------------------------------------------------------
 
-# * pas_filterDate() -----
+if ( FALSE ) {
 
-# Find MVCAA sensosrs that produced data during the 2020 fire season
+  example_pas_metadata <-
+    pas_createNew(
+      api_key = PurpleAir_API_READ_KEY,
+      fields = PurpleAir_PAS_METADATA_FIELDS,
+      countryCodes = "US",
+      stateCodes = "WA",
+      counties = "Okanogan",
+      lookbackDays = 0,            # all years
+      location_type = 0            # outdoor only
+    )
+
+}
+
+pas <- example_pas_metadata
+
+# Fields
 pas %>%
-  dplyr::filter(stringr::str_detect(locationName, "Ambassador")) %>%
-  pas_filterDate(20200901, 20201001, timezone = "America/Los_Angeles") %>%
+  names() %>%
+  print(width = 75)
+
+nrow(pas)
+
+# Where are they?
+pas %>%
   pas_leaflet()
 
+# Hardware info
+pas %>%
+  dplyr::pull(model) %>%
+  table()
 
-# TODO:  Check daily? or PA hourly? to avoid requesting data that doesn't work out
+pas %>%
+  dplyr::pull(position_rating) %>%
+  table()
 
-
-# * PurpleAir_createNewMonitor() -----
-
-# Balky Hill (Twisp) = sensor_index 13669
-monitor <-
-  PurpleAir_createNewMonitor(
-    api_key = PurpleAir_API_READ_KEY,
-    pas = pas,
-    sensor_index = 13669, #13681,
-    startdate = 20200913,
-    enddate = 20200915,
-    timezone = "America/Los_Angeles"
-  )
-
-monitor %>%
-  AirMonitor::monitor_timeseriesPlot(
-    shadedNight = TRUE
-  )
+# From PurpleAir:
+#   A 'star' rating of position accuracy. 0 stars is nowhere near the
+#   claimed location whereas 5 stars is close to the map location as
+#   indicated by the latitude and longitude values.
 
