@@ -185,7 +185,7 @@ pas %>%
 
 # Look at Methow Valley Clean Air Ambassador sites
 pas %>%
-  dplyr::filter(stringr::str_detect(locationName, "Ambassador")) %>%
+  dplyr::filter(stringr::str_detect(locationName, "bassador")) %>%
   pas_lifespanPlot(
     showSensor = TRUE,
     sensorIdentifier = "locationName",
@@ -196,7 +196,7 @@ pas %>%
 
 # Arranged by lifespan
 pas %>%
-  dplyr::filter(stringr::str_detect(locationName, "Ambassador")) %>%
+  dplyr::filter(stringr::str_detect(locationName, "bassador")) %>%
   dplyr::mutate(lifespan = last_seen - date_created) %>%
   dplyr::arrange(lifespan) %>%
   pas_lifespanPlot(

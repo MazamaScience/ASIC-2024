@@ -73,16 +73,24 @@ my_fields <-
   union("confidence") %>%
   paste0(collapse = ",")
 
-pas <-
-  pas_createNew(
-    api_key = PurpleAir_API_READ_KEY,
-    fields = my_fields,
-    countryCodes = "US",
-    stateCodes = "CA",
-    counties = "Riverside",
-    lookbackDays = 1,            # currently working
-    location_type = 0            # outdoor only
-  )
+if ( FALSE ) {
+
+  pas_Riverside <-
+    pas_createNew(
+      api_key = PurpleAir_API_READ_KEY,
+      fields = my_fields,
+      countryCodes = "US",
+      stateCodes = "CA",
+      counties = "Riverside",
+      lookbackDays = 1,            # currently working
+      location_type = 0            # outdoor only
+    )
+
+}
+
+# All sensors in Washington state (from pre-downloaded data)
+load("./data/pas_Riverside.rda")
+pas <- pas_Riverside
 
 # How many sensors?
 pas %>%
@@ -106,7 +114,9 @@ pas %>%
 
 # This sensor has beeen up since 2017-09-30!
 
-RIVR_coloc_9_hourly <-
+if ( FALSE ) {
+
+  RIVR_coloc_9_hourly <-
   pat_createHourly(
     api_key = PurpleAir_API_READ_KEY,
     pas = pas,
@@ -115,6 +125,8 @@ RIVR_coloc_9_hourly <-
     enddate = "2024-03-09",
     timezone = "America/Los_Angeles"
   )
+
+}
 
 # Make a copy and leave original in memory (R is pass-by-copy, not pass-by-reference)
 pat <- RIVR_coloc_9_hourly
