@@ -117,18 +117,18 @@ pas %>%
 if ( FALSE ) {
 
   RIVR_coloc_9_hourly <-
-  pat_createHourly(
-    api_key = PurpleAir_API_READ_KEY,
-    pas = pas,
-    sensor_index = 3537,
-    startdate = "2024-03-01",
-    enddate = "2024-03-09",
-    timezone = "America/Los_Angeles"
-  )
+    pat_createHourly(
+      api_key = PurpleAir_API_READ_KEY,
+      pas = pas,
+      sensor_index = 3537,
+      startdate = "2024-03-01",
+      enddate = "2024-03-09",
+      timezone = "America/Los_Angeles"
+    )
 
 }
 
-# Make a copy and leave original in memory (R is pass-by-copy, not pass-by-reference)
+load("./data/RIVR_coloc_9_hourly.rda")
 pat <- RIVR_coloc_9_hourly
 
 # What is this thing?
@@ -189,24 +189,33 @@ legend(
 
 # NOTE:  Negative Values!!! The correction algorithm is not perfect!
 
+plot(pat$data$datetime, pat$data$pm2.5_cf_1)
+abline(h = 0)
+
+# No negative values in the data from PurpleAir
+
 # NOTE:  In the words of Spiderman: "With great power comes great responsibility."
 
 # ----- Crestbrool 'monitor' ---------------------------------------------------
 
 # This sensor has beeen up since 2020-10-29
 
-Crestbrool_hourly <-
-  pat_createHourly(
-    api_key = PurpleAir_API_READ_KEY,
-    pas = pas,
-    sensor_index = 86879,
-    startdate = "2024-03-01",
-    enddate = "2024-03-09",
-    timezone = "America/Los_Angeles",
-    fields = PurpleAir_PAT_EPA_HOURLY_FIELDS
-  )
+if ( FALSE ) {
 
-# Make a copy and leave original in memory (R is pass-by-copy, not pass-by-reference)
+  Crestbrool_hourly <-
+    pat_createHourly(
+      api_key = PurpleAir_API_READ_KEY,
+      pas = pas,
+      sensor_index = 86879,
+      startdate = "2024-03-01",
+      enddate = "2024-03-09",
+      timezone = "America/Los_Angeles",
+      fields = PurpleAir_PAT_EPA_HOURLY_FIELDS
+    )
+
+}
+
+load("./data/Crestbrool_hourly.rda")
 pat <- Crestbrool_hourly
 
 plot(pat$data)
@@ -255,17 +264,21 @@ legend(
 
 sensor_index <- "3537"
 
-RIVR_coloc_9_raw <-
-  pat_createRaw(
-    api_key = PurpleAir_API_READ_KEY,
-    pas = pas,
-    sensor_index = sensor_index,
-    startdate = "2024-03-01",
-    enddate = "2024-03-03",
-    timezone = "America/Los_Angeles"
-  )
+if ( FALSE ) {
 
-# Make a copy and leave original in memory (R is pass-by-copy, not pass-by-reference)
+  RIVR_coloc_9_raw <-
+    pat_createRaw(
+      api_key = PurpleAir_API_READ_KEY,
+      pas = pas,
+      sensor_index = sensor_index,
+      startdate = "2024-03-01",
+      enddate = "2024-03-03",
+      timezone = "America/Los_Angeles"
+    )
+
+}
+
+load("./data/RIVR_coloc_9_raw.rda")
 pat <- RIVR_coloc_9_raw
 
 # * Run RMarkdown report -----
@@ -292,17 +305,21 @@ browseURL(file.path("Rmd", htmlPath))
 
 sensor_index <- "86879"
 
-Crestbrool_raw <-
-  pat_createRaw(
-    api_key = PurpleAir_API_READ_KEY,
-    pas = pas,
-    sensor_index = sensor_index,
-    startdate = "2024-03-01",
-    enddate = "2024-03-03",
-    timezone = "America/Los_Angeles"
-  )
+if ( FALSE ) {
 
-# Make a copy and leave original in memory (R is pass-by-copy, not pass-by-reference)
+  Crestbrool_raw <-
+    pat_createRaw(
+      api_key = PurpleAir_API_READ_KEY,
+      pas = pas,
+      sensor_index = sensor_index,
+      startdate = "2024-03-01",
+      enddate = "2024-03-03",
+      timezone = "America/Los_Angeles"
+    )
+
+}
+
+load("./data/Crestbrool_raw.rda")
 pat <- Crestbrool_raw
 
 # * Run RMarkdown report -----

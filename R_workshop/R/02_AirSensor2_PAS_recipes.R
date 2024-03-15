@@ -224,30 +224,63 @@ pas %>%
     xlab = "Months"
   )
 
-# * all Washington histogram -----
+# ----- all Washington lifespan histogram --------------------------------------
 
 # All sensors in Washington state (from pre-downloaded data)
-pas_wa <- get(load("./data/example_pas_wa.rda"))
-
-nrow(pas_wa)
-
-# Interactive map
-pas_wa %>% pas_leaflet()
-
-# All Washington histogram of dead sensor lifespans
-pas_wa %>%
-  dplyr::filter(last_seen < (max(last_seen) - lubridate::ddays(30))) %>%
+wa <-
+  get(load("./data/example_pas_wa.rda")) %>%
   dplyr::mutate(
-    lifespan = as.numeric(difftime(last_seen, date_created, units = "days")) / 30
-  ) %>%
-  dplyr::pull(lifespan) %>%
-  hist(
-    n = 20,
-    las = 1,
-    main = "Washington Dead Sensor Reporting Lifespans",
-    ylab = "count of sensors",
-    xlab = "Months"
+    lifespan = as.numeric(difftime(last_seen, date_created, units = "days")) / 30,
+    stillReporting = as.logical(last_seen >= (max(last_seen) - lubridate::ddays(30)))
   )
+
+wa_dead <-
+  wa %>%
+  dplyr::filter(last_seen < (max(last_seen) - lubridate::ddays(30)))
+
+wa_live <-
+  wa %>%
+  dplyr::filter(last_seen >= (max(last_seen) - lubridate::ddays(30)))
+
+pctStillReportingList = list()
+sensorCountTextList = list()
+sensorPercentTextList = list()
+
+for ( year in 2017:2024 ) {
+
+  start <- sprintf("%d-01-01", year)
+  end <- sprintf("%d-01-01", year + 1)
+
+  deadCount <-
+    wa_dead %>%
+    pas_filterDate(start, end, timezone = "America/Los_Angeles") %>%
+    nrow()
+
+  liveCount <-
+    wa_live %>%
+    pas_filterDate(start, end, timezone = "America/Los_Angeles") %>%
+    nrow()
+
+  pctStillReportingList[[as.character(year)]] <- round(100 * liveCount / (deadCount + liveCount))
+
+  sensorCountTextList[[as.character(year)]] <-
+    sprintf("%d/%d", liveCount, (deadCount + liveCount))
+  sensorPercentTextList[[as.character(year)]] <-
+    sprintf("%d%%", round(100 * liveCount/ (deadCount + liveCount)))
+
+}
+
+pctStillReporting <- unlist(pctStillReportingList)
+sensorCountText <- unlist(sensorCountTextList)
+sensorPercentText <- unlist(sensorPercentTextList)
+
+# NOTE:  barplot docs say 'space' defaults to 0.2
+barplot(pctStillReporting, ylim = c(0, 110), las = 1, space = 0.2, xlab = "Deployment Year")
+
+text(1:8 * 1.2 - 0.5, pctStillReporting, sensorPercentText, pos = 3, cex = 1.0)
+text(1:8 * 1.2 - 0.5, pctStillReporting, sensorCountText, pos = 1, cex = 0.8)
+
+mtext(sprintf("Percentage of Washington state PurpleAir Sensors still reporting"), line = 2, font = 2)
 
 # ----- Metadata ---------------------------------------------------------------
 
