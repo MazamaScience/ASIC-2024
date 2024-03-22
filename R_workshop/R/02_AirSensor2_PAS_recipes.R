@@ -209,9 +209,8 @@ pas %>%
 
 # * lifespan histogram -----
 
-# For dead sensors, show the range of lifespans in months
+# Show the range of lifespans in months
 pas %>%
-  dplyr::filter(last_seen < (max(last_seen) - lubridate::ddays(30))) %>%
   dplyr::mutate(
     lifespan = as.numeric(difftime(last_seen, date_created, units = "days")) / 30
   ) %>%
@@ -219,7 +218,7 @@ pas %>%
   hist(
     n = 20,
     las = 1,
-    main = "Dead Sensor Reporting Lifespans",
+    main = "Sensor Reporting Lifespans",
     ylab = "count of sensors",
     xlab = "Months"
   )
